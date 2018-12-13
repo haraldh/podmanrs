@@ -11,7 +11,7 @@ Works on Linux, MacOS and Windows 10.
 ## Set up podman on a Fedora/RHEL machine
 
 ~~~bash
-$ sudo dnf install podman
+$ sudo dnf install podman libvarlink-util
 $ sudo systemctl enable --now io.podman.socket
 $ sudo setfacl -m u:$USER:rx /run/podman
 $ sudo setfacl -m u:$USER:rw /run/podman/io.podman
@@ -125,12 +125,20 @@ First install the C++ part of https://visualstudio.microsoft.com/downloads/
 https://rustup.rs/
 
 ### Install varlink-cli
+
+#### For non-Linux systems:
+
 ~~~bash
 $ cargo install varlink-cli
 ~~~
 
 > Note: Ensure that $HOME/.cargo/bin is in your PATH or copy $HOME/.cargo/bin/varlink
 > in one of your path directories  
+
+#### For Linux systems:
+
+You can also use `varlink` util from [libvarlink](https://github.com/varlink/libvarlink)
+or install `libvarlink-util` on Fedora/RHEL machines.
 
 ### Running varlink-cli
 Without an open ssh connection like in the python case, the rust version can use the `--bridge` feature.
