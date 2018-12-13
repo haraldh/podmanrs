@@ -5,7 +5,7 @@ programmatically with python and rust.
 
 Works on Linux, MacOS and Windows 10.
 
-> Note: replace <podman-computer-name-or-ip> in this guide with the IP or hostname of your
+> Note: replace 192.168.122.29 in this guide with the IP or hostname of your
 > podman machine
 
 ## Set up podman on a Fedora/RHEL machine
@@ -37,7 +37,7 @@ $ ssh-keygen
 
 Optionally, if you don't want to enter your password every time:
 ~~~bash
-$ ssh-copy-id <podman-computer-name-or-ip>
+$ ssh-copy-id 192.168.122.29
 ~~~
 
 ## Python
@@ -65,7 +65,7 @@ usage: cli.py [-h] [-r RESOLVER] [-A ACTIVATE] [-b BRIDGE]
 Open a ssh session with port forwarding of the podman unix domain socket to a local TCP socket:
 
 ~~~bash
-$ ssh -L 127.0.0.1:1234:/run/podman/io.podman <podman-computer-name-or-ip>
+$ ssh -L 127.0.0.1:1234:/run/podman/io.podman 192.168.122.29
 ~~~
 
 > Note: only required for the python part.
@@ -136,7 +136,7 @@ $ cargo install varlink-cli
 Without an open ssh connection like in the python case, the rust version can use the `--bridge` feature.
 
 ~~~bash
-$ varlink --bridge "ssh <podman-computer-name-or-ip> varlink bridge --connect unix:/run/podman/io.podman" info
+$ varlink --bridge "ssh 192.168.122.29 varlink bridge --connect unix:/run/podman/io.podman" info
 Vendor: Atomic
 Product: podman
 Version: 0.10.1
@@ -146,7 +146,7 @@ Interfaces:
   io.podman
 
 
-$ varlink --bridge "ssh <podman-computer-name-or-ip> varlink bridge --connect unix:/run/podman/io.podman" call io.podman.Ping
+$ varlink --bridge "ssh 192.168.122.29 varlink bridge --connect unix:/run/podman/io.podman" call io.podman.Ping
 {
   "ping": {
     "message": "OK"
@@ -166,7 +166,7 @@ $ cd podmanping
 Download the varlink interface from the running podman varlink service:
  
 ~~~bash
-$ varlink --bridge "ssh <podman-computer-name-or-ip> varlink bridge --connect unix:/run/podman/io.podman" help io.podman > src/io.podman.varlink
+$ varlink --bridge "ssh 192.168.122.29 varlink bridge --connect unix:/run/podman/io.podman" help io.podman > src/io.podman.varlink
 ~~~
 
 create `build.rs`:
@@ -208,7 +208,7 @@ use crate::io_podman::*;
 
 fn main() -> Result<()> {
   let connection =
-      Connection::with_bridge("ssh <podman-computer-name-or-ip> -- varlink bridge --connect unix:/run/podman/io.podman")?;
+      Connection::with_bridge("ssh 192.168.122.29 -- varlink bridge --connect unix:/run/podman/io.podman")?;
   let mut iface = VarlinkClient::new(connection.clone());
   let reply = iface.ping().call()?;
   println!("Ping() replied with '{}'", reply.ping.message);
