@@ -1,7 +1,7 @@
 # Interfacing `podman` via the `varlink` protocol
 
-This guide shows how to access podman remotely via the varlink interface with the CLI tools and 
-programmatically with python and rust.
+This guide shows how to access podman remotely via the [varlink interface](https://varlink.org)
+with the CLI tools and programmatically with python and rust.
 
 Works on Linux, MacOS and Windows 10.
 
