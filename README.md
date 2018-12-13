@@ -170,7 +170,7 @@ Either clone this [repository](https://github.com/haraldh/podmanrs) or:
 
 ~~~bash
 $ cargo new --bin podmanrs
-$ cd podmanping
+$ cd podmanrs
 ~~~
 
 Download the varlink interface from the running podman varlink service:
