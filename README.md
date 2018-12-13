@@ -5,6 +5,8 @@ programmatically with python and rust.
 
 Works on Linux, MacOS and Windows 10.
 
+A compatibility matrix can be seen on https://varlink.org/Language-Bindings
+
 > Note: replace 192.168.122.29 in this guide with the IP or hostname of your
 > podman machine
 
