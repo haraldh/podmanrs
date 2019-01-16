@@ -198,35 +198,39 @@ build = "build.rs"
 edition = "2018"
 
 [dependencies]
-varlink = "5.3"
+varlink = "7"
 serde = "1"
 serde_derive = "1"
 serde_json = "1"
-failure_derive = "0.1"
-failure = "0.1"
+chainerror = "0.4"
 
 [build-dependencies]
-varlink_generator = "6"
+varlink_generator = "7"
 ~~~
 
 create `src/main.rs`:
 ~~~rust
 mod io_podman;
 
-use varlink::Connection;
 use crate::io_podman::*;
+use varlink::Connection;
+use std::result::Result;
+use std::error::Error;
 
-fn main() -> Result<()> {
-  let connection =
-      Connection::with_bridge("ssh 192.168.122.29 -- varlink bridge --connect unix:/run/podman/io.podman")?;
-  let mut iface = VarlinkClient::new(connection.clone());
-  let reply = iface.ping().call()?;
-  println!("Ping() replied with '{}'", reply.ping.message);
-  let reply = iface.get_info().call()?;
-  println!("Hostname: {}", reply.info.host.hostname);
-  println!("Info: {:#?}", reply.info);
-  Ok(())
+fn main() -> Result<(), Box<Error>> {
+    let connection = Connection::with_bridge(
+        "ssh -T <podman-machine> -- varlink bridge --connect unix:/run/podman/io.podman",
+    )?;
+    let mut podman = VarlinkClient::new(connection.clone());
+    let reply = podman.ping().call()?;
+    println!("Ping() replied with '{}'", reply.ping.message);
+    let reply = podman.get_info().call()?;
+    println!("Hostname: {}", reply.info.host.hostname);
+    println!("Info: {:#?}", reply.info);
+    Ok(())
 }
+
+
 ~~~
 
 Now run it:

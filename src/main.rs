@@ -2,16 +2,17 @@ mod io_podman;
 
 use crate::io_podman::*;
 use varlink::Connection;
+use std::result::Result;
+use std::error::Error;
 
-fn main() -> Result<()> {
+fn main() -> Result<(), Box<Error>> {
     let connection = Connection::with_bridge(
-        "ssh 192.168.122.29 varlink bridge --connect unix:/run/podman/io\
-         .podman",
+        "ssh -T <podman-machine> -- varlink bridge --connect unix:/run/podman/io.podman",
     )?;
-    let mut iface = VarlinkClient::new(connection.clone());
-    let reply = iface.ping().call()?;
+    let mut podman = VarlinkClient::new(connection.clone());
+    let reply = podman.ping().call()?;
     println!("Ping() replied with '{}'", reply.ping.message);
-    let reply = iface.get_info().call()?;
+    let reply = podman.get_info().call()?;
     println!("Hostname: {}", reply.info.host.hostname);
     println!("Info: {:#?}", reply.info);
     Ok(())

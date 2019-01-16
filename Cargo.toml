@@ -6,12 +6,12 @@ build = "build.rs"
 edition = "2018"
 
 [dependencies]
-varlink = "5.3"
+varlink = "7"
 serde = "1"
 serde_derive = "1"
 serde_json = "1"
-failure_derive = "0.1"
-failure = "0.1"
+chainerror = "0.4"
+
 
 [build-dependencies]
-varlink_generator = "6"
+varlink_generator = "7"
